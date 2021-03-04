@@ -1,0 +1,41 @@
+.header {
+	box-sizing: border-box;
+	display: grid;
+	align-items: center;
+	justify-content: space-between;
+	grid-auto-rows: 6rem;
+	grid-template-columns: 1fr 1fr 1fr;
+	color: var(--text);
+	background-color: #f6f6f6;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	gap: 1rem;
+}
+
+.header > a {
+	font: 700 3rem 'PT Sans', sans-serif;
+}
+.headerCenter {
+	justify-self: center;
+}
+.headerCenter a {
+	font: 400 1.2rem 'PT Sans' bold, sans-serif;
+	padding: 0.4rem;
+}
+.headerRight {
+	justify-self: end;
+}
+.headerRight a {
+	padding: 0.4rem;
+}
+@media screen and (max-width: 500px) {
+	.header:first-child {
+		float: none;
+		display: block;
+		text-align: left;
+	}
+
+	.header:last-child {
+		float: none;
+	}
+}
