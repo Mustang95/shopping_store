@@ -1,8 +1,9 @@
 import React, { createContext, useContext, useState } from "react";
-
+// import useLocalStorage from "../hooks/useLocalStorage";
 const ProductsOnCartContext = createContext();
 
 export default function ProductsOnCartProvider({ children }) {
+  // const [store, setStore] = useLocalStorage();
   const [productOnCart, setProductOnCart] = useState([]);
   return (
     <ProductsOnCartContext.Provider value={{ productOnCart, setProductOnCart }}>

@@ -4,8 +4,10 @@ import { BiCircle } from "@react-icons/all-files/bi/BiCircle";
 import { MdDeleteForever } from "@react-icons/all-files/md/MdDeleteForever";
 import styles from "../../styles/components/Modal.module.css";
 import { useProductsOnCart } from "../../context/ProductsContext";
+import useLocalStorage from "../../hooks/useLocalStorage";
 
 export default function Modal(props) {
+  const [store, setStore] = useLocalStorage();
   const { productOnCart, setProductOnCart } = useProductsOnCart();
   function onClose(event) {
     props.onClose && props.onClose(event);
@@ -17,6 +19,7 @@ export default function Modal(props) {
       1
     );
     setProductOnCart(newProductOnCart);
+    setStore(newProductOnCart);
   };
   return (
     <>
@@ -36,7 +39,7 @@ export default function Modal(props) {
           <div className={styles.content}>
             <table>
               <thead>
-                {productOnCart?.map((product, key) => (
+                {store?.map((product, key) => (
                   <tr key={key}>
                     <td>
                       <BiCircle size={15} />
