@@ -2,21 +2,30 @@ import { useState } from "react";
 import useTrintoApi from "../../hooks/useTrintoApi";
 import styles from "../../styles/components/ListItems.module.css";
 import { formatReal } from "../../helpers/helpers.js";
-
+import { useProductsOnCart } from "../../context/ProductsContext";
 const elements = {
   currency: "",
   products: [],
 };
 
 export default function ListItems() {
-  const { responseData, setResponseData } = useTrintoApi();
+  const { responseData } = useTrintoApi();
   const [filterValue, setFilterValue] = useState("");
   const [allValue, setAllValue] = useState(false);
   const [underFifity, setUnderFifity] = useState(false);
   const [overOneHundred, setOverOneHundred] = useState(false);
+  const { productOnCart, setProductOnCart } = useProductsOnCart();
+
   elements.products = responseData?.products;
   elements.currency = responseData?.currency;
 
+  function buyProducts(event, item) {
+    event.preventDefault();
+    const newPrdOnCart = [...productOnCart];
+    newPrdOnCart.push(item);
+    setProductOnCart(newPrdOnCart);
+  }
+  if (responseData === null) return <span>Loading....</span>;
   return (
     <div className={styles.listItemsContainer}>
       <select
@@ -47,7 +56,6 @@ export default function ListItems() {
         value={underFifity}
         defaultChecked={underFifity}
         onClick={(event) => {
-          debugger;
           setAllValue(false);
           setUnderFifity(event.target.checked);
           setOverOneHundred(false);
@@ -111,7 +119,12 @@ export default function ListItems() {
                 <td>{`${responseData.currency} ${formatReal(item.price)}`}</td>
                 <td>{item.hasStock === true ? "Sim" : "Não"}</td>
                 <td>
-                  <button className={styles.buyButton}>COMPRAR</button>
+                  <button
+                    className={styles.buyButton}
+                    onClick={(event) => buyProducts(event, item)}
+                  >
+                    COMPRAR
+                  </button>
                 </td>
               </tr>
             ))}

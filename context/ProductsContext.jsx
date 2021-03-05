@@ -1,21 +1,21 @@
 import React, { createContext, useContext, useState } from "react";
 
-const ProductsDataContext = createContext({});
+const ProductsOnCartContext = createContext();
 
-export default function ProductsDataProvider(children) {
-  const [productSelect, setProductSelect] = useState([]);
+export default function ProductsOnCartProvider({ children }) {
+  const [productOnCart, setProductOnCart] = useState([]);
   return (
-    <ProductsDataContext.Provider value={{ productSelect, setProductSelect }}>
+    <ProductsOnCartContext.Provider value={{ productOnCart, setProductOnCart }}>
       {children}
-    </ProductsDataContext.Provider>
+    </ProductsOnCartContext.Provider>
   );
 }
 
-export function useProducts() {
-  const context = useContext(ProductsDataContext);
+export function useProductsOnCart() {
+  const context = useContext(ProductsOnCartContext);
   if (!context)
-    throw new Error("useProducts must be used within a ProductsDataProvider");
+    throw new Error("useProducts must be used within a ProductsOnCartProvider");
 
-  const { productSelect, setProductSelect } = context;
-  return { productSelect, setProductSelect };
+  const { productOnCart, setProductOnCart } = context;
+  return { productOnCart, setProductOnCart };
 }

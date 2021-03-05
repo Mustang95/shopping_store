@@ -1,10 +1,18 @@
-import React from "react";
+import { useState } from "react";
 import styles from "../../styles/components/AppBar.module.css";
 import { MdShoppingBasket } from "@react-icons/all-files/md/MdShoppingBasket";
+import Modal from "./Modal";
+
 export default function AppBar() {
+  const [show, setShow] = useState(false);
+  const showModal = () => {
+    const aux = !show;
+    setShow(aux);
+  };
   return (
     <>
       <header>
+        <Modal onClose={showModal} show={show} />
         <div className={styles.header}>
           <a href="#default">Logo</a>
           <div className={styles.headerCenter}>
@@ -15,8 +23,12 @@ export default function AppBar() {
             <a href="#menu">Menu</a>
           </div>
           <div className={styles.headerRight}>
-            <a href="#menu">
-              <MdShoppingBasket size={40} color="black" />
+            <a href="#">
+              <MdShoppingBasket
+                size={40}
+                color="black"
+                onClick={() => showModal()}
+              />
             </a>
           </div>
         </div>
