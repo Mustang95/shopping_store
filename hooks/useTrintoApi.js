@@ -22,5 +22,5 @@ export default function useRapidApi() {
     };
     getPlayers();
   }, []);
-  return { responseData };
+  return { responseData, setResponseData };
 }

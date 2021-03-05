@@ -1,7 +1,5 @@
 import React from "react";
 import styles from "../../styles/components/AppBar.module.css";
-import { AiOutlineSearch } from "@react-icons/all-files/ai/AiOutlineSearch";
-import { FaUserCircle } from "@react-icons/all-files/fa/FaUserCircle";
 import { MdShoppingBasket } from "@react-icons/all-files/md/MdShoppingBasket";
 export default function AppBar() {
   return (
@@ -17,14 +15,8 @@ export default function AppBar() {
             <a href="#menu">Menu</a>
           </div>
           <div className={styles.headerRight}>
-            <a href="#about">
-              <AiOutlineSearch />
-            </a>
             <a href="#menu">
-              <FaUserCircle />
-            </a>
-            <a href="#menu">
-              <MdShoppingBasket />
+              <MdShoppingBasket size={40} color="black" />
             </a>
           </div>
         </div>
