@@ -1,12 +1,17 @@
-import React, { createContext, useContext, useState } from "react";
-// import useLocalStorage from "../hooks/useLocalStorage";
+import React, { createContext, useContext, useReducer, useEffect } from "react";
+import bookReducer from "../reducers/bookReducer";
 const ProductsOnCartContext = createContext();
 
 export default function ProductsOnCartProvider({ children }) {
-  // const [store, setStore] = useLocalStorage();
-  const [productOnCart, setProductOnCart] = useState([]);
+  const [products, dispatch] = useReducer(bookReducer, [], () => {
+    const localData = localStorage.getItem("products");
+    return localData ? JSON.parse(localData) : [];
+  });
+  useEffect(() => {
+    localStorage.setItem("products", JSON.stringify(products));
+  }, [products]);
   return (
-    <ProductsOnCartContext.Provider value={{ productOnCart, setProductOnCart }}>
+    <ProductsOnCartContext.Provider value={{ products, dispatch }}>
       {children}
     </ProductsOnCartContext.Provider>
   );
@@ -15,8 +20,10 @@ export default function ProductsOnCartProvider({ children }) {
 export function useProductsOnCart() {
   const context = useContext(ProductsOnCartContext);
   if (!context)
-    throw new Error("useProducts must be used within a ProductsOnCartProvider");
+    throw new Error(
+      "useProductsOnCart must be used within a ProductsOnCartProvider"
+    );
 
-  const { productOnCart, setProductOnCart } = context;
-  return { productOnCart, setProductOnCart };
+  const { products, dispatch } = context;
+  return { products, dispatch };
 }

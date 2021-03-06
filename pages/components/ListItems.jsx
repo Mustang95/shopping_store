@@ -3,7 +3,7 @@ import useTrintoApi from "../../hooks/useTrintoApi";
 import styles from "../../styles/components/ListItems.module.css";
 import { formatReal } from "../../helpers/helpers.js";
 import { useProductsOnCart } from "../../context/ProductsContext";
-import useLocalStorage from "../../hooks/useLocalStorage";
+
 const elements = {
   currency: "",
   products: [],
@@ -15,18 +15,14 @@ export default function ListItems() {
   const [allValue, setAllValue] = useState(false);
   const [underFifity, setUnderFifity] = useState(false);
   const [overOneHundred, setOverOneHundred] = useState(false);
-  const { productOnCart, setProductOnCart } = useProductsOnCart();
-  const [store, setStore] = useLocalStorage();
+  const { products, dispatch } = useProductsOnCart();
 
   elements.products = responseData?.products;
   elements.currency = responseData?.currency;
 
   function buyProducts(event, item) {
     event.preventDefault();
-    const newPrdOnCart = [...productOnCart];
-    newPrdOnCart.push(item);
-    setProductOnCart(newPrdOnCart);
-    setStore(newPrdOnCart);
+    dispatch({ type: "ADD_PRODUCT", item });
   }
   if (responseData === null) return <span>Loading....</span>;
   return (

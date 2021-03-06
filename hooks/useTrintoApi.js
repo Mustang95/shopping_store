@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import jQuery from "jquery";
 
-//window.$ = window.jQuery = jQuery;
-
 export default function useRapidApi() {
   let [responseData, setResponseData] = useState(null);
   useEffect(() => {

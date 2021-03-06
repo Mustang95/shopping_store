@@ -3,9 +3,13 @@ import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
   return (
-    <ProductsOnCartProvider>
-      <Component {...pageProps} />
-    </ProductsOnCartProvider>
+    <div suppressHydrationWarning>
+      {typeof window === "undefined" ? null : (
+        <ProductsOnCartProvider>
+          <Component {...pageProps} />
+        </ProductsOnCartProvider>
+      )}
+    </div>
   );
 }
 

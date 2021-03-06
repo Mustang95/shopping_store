@@ -4,23 +4,22 @@ import { BiCircle } from "@react-icons/all-files/bi/BiCircle";
 import { MdDeleteForever } from "@react-icons/all-files/md/MdDeleteForever";
 import styles from "../../styles/components/Modal.module.css";
 import { useProductsOnCart } from "../../context/ProductsContext";
-import useLocalStorage from "../../hooks/useLocalStorage";
 
 export default function Modal(props) {
-  const [store, setStore] = useLocalStorage();
+  const { products, dispatch } = useProductsOnCart();
   const { productOnCart, setProductOnCart } = useProductsOnCart();
   function onClose(event) {
     props.onClose && props.onClose(event);
   }
-  const removeProduct = (product) => {
-    const newProductOnCart = [...productOnCart];
-    newProductOnCart.splice(
-      newProductOnCart.findIndex((elem) => elem.name === product.name),
-      1
-    );
-    setProductOnCart(newProductOnCart);
-    setStore(newProductOnCart);
-  };
+  // const removeProduct = (product) => {
+  // const newProductOnCart = [...productOnCart];
+  // newProductOnCart.splice(
+  //   newProductOnCart.findIndex((elem) => elem.name === product.name),
+  //   1
+  // );
+  // setProductOnCart(newProductOnCart);
+  // setStore(newProductOnCart);
+  // };
   return (
     <>
       {props.show ? (
@@ -39,7 +38,7 @@ export default function Modal(props) {
           <div className={styles.content}>
             <table>
               <thead>
-                {store?.map((product, key) => (
+                {products?.map((product, key) => (
                   <tr key={key}>
                     <td>
                       <BiCircle size={15} />
@@ -50,7 +49,9 @@ export default function Modal(props) {
                     <td>
                       <MdDeleteForever
                         size={25}
-                        onClick={() => removeProduct(product, props)}
+                        onClick={() =>
+                          dispatch({ type: "REMOVE_PRODUCT", product })
+                        }
                       />
                     </td>
                   </tr>
