@@ -11,15 +11,14 @@ export default function Modal(props) {
   function onClose(event) {
     props.onClose && props.onClose(event);
   }
-  // const removeProduct = (product) => {
-  // const newProductOnCart = [...productOnCart];
-  // newProductOnCart.splice(
-  //   newProductOnCart.findIndex((elem) => elem.name === product.name),
-  //   1
-  // );
-  // setProductOnCart(newProductOnCart);
-  // setStore(newProductOnCart);
-  // };
+  function totalPriceOnCart() {
+    let totalprice = 0;
+    for (let value of products) {
+      totalprice += value.price;
+    }
+    return totalprice;
+  }
+  let currentValue = totalPriceOnCart();
   return (
     <>
       {props.show ? (
@@ -31,6 +30,7 @@ export default function Modal(props) {
               </div>
               <div className={styles.column3}>Carrinho</div>
               <div className={styles.column3}>
+                {currentValue}
                 <pre />
               </div>
             </div>
