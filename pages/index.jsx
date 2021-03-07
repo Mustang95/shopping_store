@@ -1,8 +1,8 @@
 import Head from "next/head";
-import useRapidApi from "../hooks/useTrintoApi";
 import styles from "../styles/Home.module.css";
-import AppBar from "../pages/components/AppBar";
 import ListItems from "../pages/components/ListItems";
+import AppBarComponent from "./components/AppBarComponent";
+import Modal from "./components/Modal";
 
 function Home() {
   return (
@@ -10,8 +10,9 @@ function Home() {
       <Head>
         <title>Shopping | Store</title>
       </Head>
-      <AppBar />
+      <AppBarComponent />
       <ListItems />
+      <Modal />
     </div>
   );
 }

@@ -5,6 +5,7 @@ import Head from "next/head";
 import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import theme from "../src/theme";
+import CartStateProvider from "../context/CartStateContext";
 
 export default function MyApp(props) {
   const { Component, pageProps } = props;
@@ -31,7 +32,9 @@ export default function MyApp(props) {
         <div suppressHydrationWarning>
           {typeof window === "undefined" ? null : (
             <ProductsOnCartProvider>
-              <Component {...pageProps} />
+              <CartStateProvider>
+                <Component {...pageProps} />
+              </CartStateProvider>
             </ProductsOnCartProvider>
           )}
         </div>
