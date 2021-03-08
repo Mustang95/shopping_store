@@ -1,32 +1,21 @@
-.header {
-  box-sizing: border-box;
-  display: grid;
-  align-items: center;
-  justify-content: space-between;
-  grid-auto-rows: 6rem;
-  grid-template-columns: 1fr 1fr 1fr;
+.headerColors {
   color: var(--text);
-  background-color: #f6f6f6;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  gap: 1rem;
+  background-color: var(--background);
 }
-
-.header > a {
-  font: 700 3rem "PT Sans", sans-serif;
+.content {
+  max-height: calc(100vh - 13rem);
+  overflow: auto;
 }
-.headerCenter {
-  justify-self: center;
+.header {
+  height: 2rem;
+  margin: 1rem;
 }
-.headerCenter a {
-  font: 400 1.2rem "PT Sans" bold, sans-serif;
-  padding: 0.4rem;
+.footer {
+  height: 5rem;
+  margin: 1rem;
 }
-.headerRight {
-  justify-self: end;
-}
-.headerRight a {
-  padding: 0.4rem;
+.button {
+  width: 100%;
 }
 @media screen and (max-width: 500px) {
   .header:first-child {

@@ -2,11 +2,13 @@ import { useState } from "react";
 import styles from "../../styles/components/AppBar.module.css";
 import { IoMdClose } from "@react-icons/all-files/io/IoMdClose";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import CloseIcon from "@material-ui/icons/Close";
 import { useProductsOnCart } from "../../context/ProductsContext";
 import ShoppingCartOutlinedIcon from "@material-ui/icons/ShoppingCartOutlined";
 import { useCartState } from "../../context/CartStateContext";
 import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
+import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import {
   fade,
@@ -30,26 +32,12 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
+import Divider from "@material-ui/core/Divider";
 
-const drawerWidth = 400;
-const StyledTableCell = withStyles((theme) => ({
-  head: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
-  },
-  body: {
-    fontSize: 14,
-  },
-}))(TableCell);
-
-const StyledTableRow = withStyles((theme) => ({
-  root: {
-    "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.action.hover,
-    },
-  },
-}))(TableRow);
 const useStyles = makeStyles((theme) => ({
+  divideLinerSpacement: {
+    margin: "0.4rem",
+  },
   grow: {
     flexGrow: 1,
     paddingTop: "4rem",
@@ -61,43 +49,6 @@ const useStyles = makeStyles((theme) => ({
     display: "none",
     [theme.breakpoints.up("sm")]: {
       display: "block",
-    },
-  },
-  search: {
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
-    },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(3),
-      width: "auto",
-    },
-  },
-  searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  inputRoot: {
-    color: "inherit",
-  },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: "20ch",
     },
   },
   sectionDesktop: {
@@ -118,12 +69,10 @@ const useStyles = makeStyles((theme) => ({
       }),
     },
     appBarShift: {
-      width: `calc(100% - ${drawerWidth}px)`,
       transition: theme.transitions.create(["margin", "width"], {
         easing: theme.transitions.easing.easeOut,
         duration: theme.transitions.duration.enteringScreen,
       }),
-      marginRight: drawerWidth,
     },
     title: {
       flexGrow: 1,
@@ -132,12 +81,9 @@ const useStyles = makeStyles((theme) => ({
       display: "none",
     },
     drawer: {
-      width: drawerWidth,
       flexShrink: 0,
     },
-    drawerPaper: {
-      width: drawerWidth,
-    },
+
     drawerHeader: {
       display: "flex",
       alignItems: "center",
@@ -153,7 +99,6 @@ const useStyles = makeStyles((theme) => ({
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
       }),
-      marginRight: -drawerWidth,
     },
     contentShift: {
       transition: theme.transitions.create("margin", {
@@ -168,7 +113,6 @@ export default function AppBarComponent() {
   const classes = useStyles();
   const theme = useTheme();
   const [show, setShow] = useState(false);
-  const { open, setOpen } = useCartState();
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 
@@ -193,7 +137,6 @@ export default function AppBarComponent() {
   };
 
   const handleMenuClose = () => {
-    // setOpen(!open);
     setAnchorEl(null);
     handleMobileMenuClose();
   };
@@ -205,7 +148,6 @@ export default function AppBarComponent() {
 
   const renderMenu = (
     <Popover
-      // id={id}
       open={isMenuOpen}
       anchorEl={anchorEl}
       onClose={handleMenuClose}
@@ -218,17 +160,102 @@ export default function AppBarComponent() {
         horizontal: "center",
       }}
     >
-      <Container maxWidth="md">
-        <Paper>
-          <Typography>{currentValue}</Typography>
-          {/* {products?.map((product, key) => ( key={key}>
-                    {product.brand} {product.name}
-                    {product.hasStock}{product.price}
-                    <DeleteForeverIcon size="large"
-                    onClick={() =>
-                      dispatch({ type: "REMOVE_PRODUCT", product })}/>
-                    ))} */}
-        </Paper>
+      <Container fixed>
+        <header className={styles.header}>
+          <Grid container>
+            <Grid item xs={2}>
+              <ShoppingCartOutlinedIcon size="large" />
+            </Grid>
+            <Grid item xs={8}>
+              <Typography align="left" variant="subtitle1">
+                Meu carrinho
+              </Typography>
+            </Grid>
+            <Grid item xs={2}>
+              <IconButton
+                edge="end"
+                color="inherit"
+                aria-label="delete product"
+                size="small"
+                onClick={handleMenuClose}
+              >
+                <CloseIcon />
+              </IconButton>
+            </Grid>
+          </Grid>
+        </header>
+        <div className={styles.content}>
+          {products?.map((product, key) => (
+            <Container maxWidth="xs">
+              <Box>
+                <Grid container>
+                  <Grid item xs={3} spacing={3}>
+                    <img
+                      src="../download.png"
+                      alt="imgproduct"
+                      width="100%"
+                      height="80"
+                    />
+                  </Grid>
+                  <Grid item xs={9} spacing={1}>
+                    <Typography align="center">
+                      {product.brand} {product.name}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Typography align="center">Qtd</Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography align="center">{product.price}</Typography>
+                  </Grid>
+                  <Grid
+                    item
+                    xs={2}
+                    justify="flex-end"
+                    alignContent="flex-end"
+                    alignItems="flex-end"
+                  >
+                    <IconButton
+                      edge="end"
+                      color="inherit"
+                      aria-label="delete product"
+                      size="small"
+                      onClick={() =>
+                        dispatch({ type: "REMOVE_PRODUCT", product })
+                      }
+                    >
+                      <DeleteForeverIcon size="large" />
+                    </IconButton>
+                  </Grid>
+                </Grid>
+              </Box>
+              <Divider className={classes.divideLinerSpacement} />
+            </Container>
+          ))}
+        </div>
+        <footer className={styles.footer}>
+          <Grid container justify="center" alignItems="center">
+            <Grid item xs={6}>
+              <Typography align="left" variant="h6">
+                Total:
+              </Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography align="rigth" variant="h6">
+                US$ {currentValue}
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Button
+                variant="contained"
+                size="large"
+                className={styles.button}
+              >
+                <Typography>Finalizar pedido</Typography>
+              </Button>
+            </Grid>
+          </Grid>
+        </footer>
       </Container>
     </Popover>
   );
@@ -236,7 +263,6 @@ export default function AppBarComponent() {
   const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
     <Popover
-      // id={id}
       open={isMobileMenuOpen}
       anchorEl={mobileMoreAnchorEl}
       onClose={handleMobileMenuClose}
@@ -250,74 +276,108 @@ export default function AppBarComponent() {
       }}
     >
       <Container fixed>
-        <Typography>Meu carrinho</Typography>
-        {products?.map((product, key) => (
-          <Container maxWidth="xs">
-            <Paper variant="elevation" square>
-              <Grid container>
-                <Grid item xs={3} spacing={1}>
-                  <img
-                    src="../download.png"
-                    alt="imgproduct"
-                    width="100%"
-                    height="80"
-                  />
-                  {/* <Grid container justify="center">*/}
-                </Grid>
-                <Grid item xs={9} spacing={1}>
-                  <Typography align="left">
-                    {product.brand} {product.name}
-                  </Typography>
-                  {/* <Grid container justify="center">*/}
-                </Grid>
-                <Grid item xs={4}>
-                  <Typography align="center">Qtd</Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography align="center">{product.price}</Typography>
-                </Grid>
-                <Grid
-                  item
-                  xs={2}
-                  justify="flex-end"
-                  alignContent="flex-end"
-                  alignItems="flex-end"
-                >
-                  <IconButton
-                    edge="end"
-                    color="inherit"
-                    aria-label="delete product"
-                    size="small"
+        <header className={styles.header}>
+          <Grid container>
+            <Grid item xs={2}>
+              <ShoppingCartOutlinedIcon size="large" />
+            </Grid>
+            <Grid item xs={8}>
+              <Typography align="left" variant="subtitle1">
+                Meu carrinho
+              </Typography>
+            </Grid>
+            <Grid item xs={2}>
+              <IconButton
+                edge="end"
+                color="inherit"
+                aria-label="delete product"
+                size="small"
+                onClick={handleMenuClose}
+              >
+                <CloseIcon />
+              </IconButton>
+            </Grid>
+          </Grid>
+        </header>
+        <div className={styles.content}>
+          {products?.map((product, key) => (
+            <Container maxWidth="xs">
+              <Box>
+                <Grid container>
+                  <Grid item xs={3} spacing={3}>
+                    <img
+                      src="../download.png"
+                      alt="imgproduct"
+                      width="100%"
+                      height="80"
+                    />
+                  </Grid>
+                  <Grid item xs={9} spacing={1}>
+                    <Typography align="center">
+                      {product.brand} {product.name}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Typography align="center">Qtd</Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography align="center">{product.price}</Typography>
+                  </Grid>
+                  <Grid
+                    item
+                    xs={2}
+                    justify="flex-end"
+                    alignContent="flex-end"
+                    alignItems="flex-end"
                   >
-                    <DeleteForeverIcon
-                      size="large"
+                    <IconButton
+                      edge="end"
+                      color="inherit"
+                      aria-label="delete product"
+                      size="small"
                       onClick={() =>
                         dispatch({ type: "REMOVE_PRODUCT", product })
                       }
-                    />
-                  </IconButton>
+                    >
+                      <DeleteForeverIcon size="large" />
+                    </IconButton>
+                  </Grid>
                 </Grid>
-              </Grid>
-            </Paper>
-          </Container>
-        ))}
-        <Typography align="left">Total:</Typography>
-        <Typography align="rigth">R$ {currentValue}</Typography>
-        <Button>
-          <Typography>Finalizar pedido</Typography>
-        </Button>
+              </Box>
+              <Divider className={classes.divideLinerSpacement} />
+            </Container>
+          ))}
+        </div>
+        <footer className={styles.footer}>
+          <Grid container justify="center" alignItems="center">
+            <Grid item xs={6}>
+              <Typography align="left" variant="h6">
+                Total:
+              </Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography align="rigth" variant="h6">
+                US$ {currentValue}
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Button
+                variant="contained"
+                size="large"
+                className={styles.button}
+              >
+                <Typography>Finalizar pedido</Typography>
+              </Button>
+            </Grid>
+          </Grid>
+        </footer>
       </Container>
     </Popover>
-  ); //isMobileMenuOpen
-
-  const showModal = () => {
-    const aux = !show;
-    setShow(aux);
-  };
+  );
   return (
     <>
       <div className={classes.grow}>
-        <AppBar position="fixed">
+        <AppBar position="fixed" className={styles.headerColors}>
           <Toolbar>
             <IconButton
               edge="start"
@@ -328,7 +388,7 @@ export default function AppBarComponent() {
               <MenuIcon />
             </IconButton>
             <Typography className={classes.title} variant="h6" noWrap>
-              Material-UI
+              Logo
             </Typography>
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
