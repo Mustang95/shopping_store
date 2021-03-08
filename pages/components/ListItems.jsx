@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import useTrintoApi from "../../hooks/useTrintoApi";
 import { useCartState } from "../../context/CartStateContext";
 import styles from "../../styles/components/ListItems.module.css";
+import BannerSlider from "../components/BannerSlider";
 import Badge from "@material-ui/core/Badge";
 import { formatReal } from "../../helpers/helpers.js";
 import { useProductsOnCart } from "../../context/ProductsContext";
@@ -20,10 +21,10 @@ import Container from "@material-ui/core/Container";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import Fab from "@material-ui/core/Fab";
-import Popover from "@material-ui/core/Popover";
-import Box from "@material-ui/core/Box";
-import Modal from "./Modal";
+// import Fab from "@material-ui/core/Fab";
+// import Popover from "@material-ui/core/Popover";
+// import Box from "@material-ui/core/Box";
+// import Modal from "./Modal";
 
 import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
@@ -60,19 +61,18 @@ export default function ListItems() {
   const { products, dispatch } = useProductsOnCart();
   const [show, setShow] = useState(false);
   const { open, setOpen } = useCartState();
-  console.log(open);
   function buyProducts(event, item) {
     event.preventDefault();
     dispatch({ type: "ADD_PRODUCT", item });
   }
-  const showCart = () => {
-    const aux = !show;
-    setShow(aux);
-  };
+  // const showCart = () => {
+  //   const aux = !show;
+  //   setShow(aux);
+  // };
   if (responseData === null) return <span>Loading....</span>;
   return (
     <>
-      <Fab
+      {/* <Fab
         color="primary"
         aria-label="add"
         className={classes.fab}
@@ -81,14 +81,14 @@ export default function ListItems() {
         <Badge badgeContent={products.length} color="secondary">
           <ShoppingCartOutlinedIcon />
         </Badge>
-      </Fab>
+      </Fab> */}
       <Accordion className={classes.listHeaderFilterContainer}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
-          <Typography className={classes.heading}>
+          <Typography className={classes.heading} color="textPrimary">
             Filtros de Pesquisa Avançado
           </Typography>
         </AccordionSummary>
@@ -164,8 +164,11 @@ export default function ListItems() {
           </Container>
         </AccordionDetails>
       </Accordion>
-      <div>
-        <pre>aaaa</pre>
+      <div className={styles.titleBackgroundColor}>
+        <BannerSlider />
+        <Typography variant="h3" align="center" color="textPrimary">
+          Produtos
+        </Typography>
       </div>
       <div className={styles.listContainer}>
         {responseData?.products
@@ -215,7 +218,7 @@ export default function ListItems() {
               ></CardMedia>
               <CardContent>
                 <Typography
-                  color="primary"
+                  color="textPrimary"
                   gutterBottom
                   variant="title"
                   component="h2"
@@ -233,7 +236,7 @@ export default function ListItems() {
               <CardActions>
                 <Button
                   variant="contained"
-                  color="primary"
+                  color="secondary"
                   onClick={(event) => buyProducts(event, item)}
                 >
                   <Typography>COMPRAR</Typography>

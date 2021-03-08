@@ -104,3 +104,7 @@
 #centered-toggle-button {
   position: absolute;
 }
+
+.marginTypo {
+  margin: 1rem;
+}

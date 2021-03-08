@@ -198,15 +198,23 @@ export default function AppBarComponent() {
                     />
                   </Grid>
                   <Grid item xs={9} spacing={1}>
-                    <Typography align="center">
-                      {product.brand} {product.name}
-                    </Typography>
+                    <div className={styles.marginTypo}>
+                      <Typography
+                        align="left"
+                        variant="subtitle1"
+                        color="textPrimary"
+                      >
+                        {product.brand} {product.name}
+                      </Typography>
+                    </div>
                   </Grid>
                   <Grid item xs={4}>
-                    <Typography align="center">Qtd</Typography>
+                    <Typography align="center">Qtd: 1 un</Typography>
                   </Grid>
                   <Grid item xs={6}>
-                    <Typography align="center">{product.price}</Typography>
+                    <Typography align="center" color="textSecondary">
+                      US$ {product.price}
+                    </Typography>
                   </Grid>
                   <Grid
                     item
@@ -224,7 +232,7 @@ export default function AppBarComponent() {
                         dispatch({ type: "REMOVE_PRODUCT", product })
                       }
                     >
-                      <DeleteForeverIcon size="large" />
+                      <DeleteForeverIcon size="large" color="error" />
                     </IconButton>
                   </Grid>
                 </Grid>
@@ -241,7 +249,7 @@ export default function AppBarComponent() {
               </Typography>
             </Grid>
             <Grid item xs={6}>
-              <Typography align="rigth" variant="h6">
+              <Typography align="rigth" variant="h6" color="textSecondary">
                 US$ {currentValue}
               </Typography>
             </Grid>
@@ -249,6 +257,7 @@ export default function AppBarComponent() {
               <Button
                 variant="contained"
                 size="large"
+                color="secondary"
                 className={styles.button}
               >
                 <Typography>Finalizar pedido</Typography>

@@ -5,7 +5,9 @@
     "main main main"
     "footer footer footer";
   grid-gap: 1rem;
-  padding: 0.5rem;
+  /* padding: 0.5rem; */
+  justify-content: center;
+  background-color: var(--background);
 }
 .glassCase {
   filter: blur(10px);
@@ -175,4 +177,12 @@
 .favoriteIcon {
   position: absolute;
   margin: 0.5rem;
+}
+
+.titleBackgroundColor {
+  background-color: var(--background);
+}
+
+.colorButton {
+  background-color: orange;
 }
