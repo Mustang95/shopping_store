@@ -4,36 +4,51 @@ import { IoMdClose } from "@react-icons/all-files/io/IoMdClose";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import { useProductsOnCart } from "../../context/ProductsContext";
 import ShoppingCartOutlinedIcon from "@material-ui/icons/ShoppingCartOutlined";
-import { MdShoppingBasket } from "@react-icons/all-files/md/MdShoppingBasket";
-import Modal from "./Modal";
 import { useCartState } from "../../context/CartStateContext";
-import { fade, makeStyles, useTheme } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
+import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
+import {
+  fade,
+  makeStyles,
+  withStyles,
+  useTheme,
+} from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
-import InputBase from "@material-ui/core/InputBase";
 import Badge from "@material-ui/core/Badge";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import MenuIcon from "@material-ui/icons/Menu";
-import SearchIcon from "@material-ui/icons/Search";
-import AccountCircle from "@material-ui/icons/AccountCircle";
-import MailIcon from "@material-ui/icons/Mail";
-import NotificationsIcon from "@material-ui/icons/Notifications";
-import MoreIcon from "@material-ui/icons/MoreVert";
-import Drawer from "@material-ui/core/Drawer";
-import List from "@material-ui/core/List";
-import Divider from "@material-ui/core/Divider";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
+import Popover from "@material-ui/core/Popover";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Paper from "@material-ui/core/Paper";
 
 const drawerWidth = 400;
+const StyledTableCell = withStyles((theme) => ({
+  head: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+  body: {
+    fontSize: 14,
+  },
+}))(TableCell);
 
+const StyledTableRow = withStyles((theme) => ({
+  root: {
+    "&:nth-of-type(odd)": {
+      backgroundColor: theme.palette.action.hover,
+    },
+  },
+}))(TableRow);
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
@@ -186,144 +201,114 @@ export default function AppBarComponent() {
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
-  let renderMenu;
   const menuId = "primary-search-account-menu";
-  if (isMenuOpen) {
-    renderMenu = (
-      <div className={styles.modal} id="modal">
-        <h2>
-          <div className={styles.row}>
-            <div className={styles.column3closeButton}>
-              <IoMdClose onClick={handleMenuClose} />
-            </div>
-            <div className={styles.column3}>Carrinho</div>
-            <div className={styles.column3}>
-              {currentValue}
-              <pre />
-            </div>
-          </div>
-        </h2>
-        <div className={styles.content}>
-          <table>
-            <thead>
-              {products?.map((product, key) => (
-                <tr key={key}>
-                  <td>{product.name}</td>
-                  <td>{product.price}</td>
-                  <td>{product.brand === null ? "-" : product.brand}</td>
-                  <td>
+
+  const renderMenu = (
+    <Popover
+      // id={id}
+      open={isMenuOpen}
+      anchorEl={anchorEl}
+      onClose={handleMenuClose}
+      anchorOrigin={{
+        vertical: "bottom",
+        horizontal: "center",
+      }}
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "center",
+      }}
+    >
+      <Container maxWidth="md">
+        <Paper>
+          <Typography>{currentValue}</Typography>
+          {/* {products?.map((product, key) => ( key={key}>
+                    {product.brand} {product.name}
+                    {product.hasStock}{product.price}
+                    <DeleteForeverIcon size="large"
+                    onClick={() =>
+                      dispatch({ type: "REMOVE_PRODUCT", product })}/>
+                    ))} */}
+        </Paper>
+      </Container>
+    </Popover>
+  );
+
+  const mobileMenuId = "primary-search-account-menu-mobile";
+  const renderMobileMenu = (
+    <Popover
+      // id={id}
+      open={isMobileMenuOpen}
+      anchorEl={mobileMoreAnchorEl}
+      onClose={handleMobileMenuClose}
+      anchorOrigin={{
+        vertical: "bottom",
+        horizontal: "center",
+      }}
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "center",
+      }}
+    >
+      <Container fixed>
+        <Typography>Meu carrinho</Typography>
+        {products?.map((product, key) => (
+          <Container maxWidth="xs">
+            <Paper variant="elevation" square>
+              <Grid container>
+                <Grid item xs={3} spacing={1}>
+                  <img
+                    src="../download.png"
+                    alt="imgproduct"
+                    width="100%"
+                    height="80"
+                  />
+                  {/* <Grid container justify="center">*/}
+                </Grid>
+                <Grid item xs={9} spacing={1}>
+                  <Typography align="left">
+                    {product.brand} {product.name}
+                  </Typography>
+                  {/* <Grid container justify="center">*/}
+                </Grid>
+                <Grid item xs={4}>
+                  <Typography align="center">Qtd</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography align="center">{product.price}</Typography>
+                </Grid>
+                <Grid
+                  item
+                  xs={2}
+                  justify="flex-end"
+                  alignContent="flex-end"
+                  alignItems="flex-end"
+                >
+                  <IconButton
+                    edge="end"
+                    color="inherit"
+                    aria-label="delete product"
+                    size="small"
+                  >
                     <DeleteForeverIcon
                       size="large"
                       onClick={() =>
                         dispatch({ type: "REMOVE_PRODUCT", product })
                       }
                     />
-                  </td>
-                </tr>
-              ))}
-            </thead>
-          </table>
-        </div>
-      </div>
-      // <Drawer
-      //   className={classes.drawer}
-      //   variant="persistent"
-      //   anchor="right"
-      //   open={isMenuOpen}
-      //   classes={{
-      //     paper: classes.drawerPaper,
-      //   }}
-      // >
-      //   <div className={classes.drawerHeader}>
-      //     <IconButton onClick={handleMenuClose}>
-      //       {theme.direction === "rtl" ? (
-      //         <ChevronLeftIcon />
-      //       ) : (
-      //         <ChevronRightIcon />
-      //       )}
-      //     </IconButton>
-      //   </div>
-      //   <Divider />
-      //   <List>
-      //     {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-      //       <ListItem button key={text}>
-      //         <ListItemIcon>
-      //           {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-      //         </ListItemIcon>
-      //         <ListItemText primary={text} />
-      //       </ListItem>
-      //     ))}
-      //   </List>
-      //   <Divider />
-      //   <List>
-      //     {["All mail", "Trash", "Spam"].map((text, index) => (
-      //       <ListItem button key={text}>
-      //         <ListItemIcon>
-      //           {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-      //         </ListItemIcon>
-      //         <ListItemText primary={text} />
-      //       </ListItem>
-      //     ))}
-      //   </List>
-      // </Drawer>
-      // <Menu
-      //   anchorEl={anchorEl}
-      //   anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      //   id={menuId}
-      //   keepMounted
-      //   transformOrigin={{ vertical: "top", horizontal: "right" }}
-      //   open={open}
-      //   onClose={handleMenuClose}
-      // >
-      //   <Modal show={open} onClose={handleMenuClose} />
-      //   <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      //   <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-      // </Menu>
-    );
-  }
-
-  const mobileMenuId = "primary-search-account-menu-mobile";
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem>
-        <IconButton aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={11} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <Badge badgeContent={4} color="secondary">
-          <IconButton
-            aria-label="account of current user"
-            aria-controls="primary-search-account-menu"
-            aria-haspopup="true"
-            color="inherit"
-          >
-            <AccountCircle />
-          </IconButton>
-        </Badge>
-        <p>Profile</p>
-      </MenuItem>
-    </Menu>
-  );
+                  </IconButton>
+                </Grid>
+              </Grid>
+            </Paper>
+          </Container>
+        ))}
+        <Typography align="left">Total:</Typography>
+        <Typography align="rigth">R$ {currentValue}</Typography>
+        <Button>
+          <Typography>Finalizar pedido</Typography>
+        </Button>
+      </Container>
+    </Popover>
+  ); //isMobileMenuOpen
 
   const showModal = () => {
     const aux = !show;
@@ -331,12 +316,6 @@ export default function AppBarComponent() {
   };
   return (
     <>
-      {/* <Modal onClose={showModal} show={show} /> */}
-      {/* <MdShoppingBasket
-                size={40}
-                color="black"
-                onClick={() => showModal()}
-              /> */}
       <div className={classes.grow}>
         <AppBar position="fixed">
           <Toolbar>
@@ -351,24 +330,11 @@ export default function AppBarComponent() {
             <Typography className={classes.title} variant="h6" noWrap>
               Material-UI
             </Typography>
-            <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon />
-              </div>
-              <InputBase
-                placeholder="Search…"
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput,
-                }}
-                inputProps={{ "aria-label": "search" }}
-              />
-            </div>
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
               <IconButton
                 edge="end"
-                aria-label="account of current user"
+                aria-label="cart of current user"
                 aria-controls={menuId}
                 aria-haspopup="true"
                 onClick={handleProfileMenuOpen}
@@ -381,13 +347,15 @@ export default function AppBarComponent() {
             </div>
             <div className={classes.sectionMobile}>
               <IconButton
-                aria-label="show more"
+                aria-label="cart of current user"
                 aria-controls={mobileMenuId}
                 aria-haspopup="true"
                 onClick={handleMobileMenuOpen}
                 color="inherit"
               >
-                <MoreIcon />
+                <Badge badgeContent={products.length} color="secondary">
+                  <ShoppingCartOutlinedIcon />
+                </Badge>
               </IconButton>
             </div>
           </Toolbar>
